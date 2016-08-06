@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/admin/inventory</path>
+    <page_callback>CRM_Pricesetinventory_Page_Inventory</page_callback>
+    <title>Inventory</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/admin/inventory/items</path>
+    <page_callback>CRM_Pricesetinventory_Page_InventorySetItems</page_callback>
+    <title>InventorySetItems</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/admin/inventory/set</path>
+    <page_callback>CRM_Pricesetinventory_Form_InventorySet</page_callback>
+    <title>InventorySet</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/admin/inventory/item</path>
+    <page_callback>CRM_Pricesetinventory_Form_InventoryItem</page_callback>
+    <title>InventoryItem</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+</menu>
