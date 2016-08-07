@@ -31,7 +31,7 @@ function civicrm_api3_inventory_get($params) {
     $sql = "SELECT * FROM `{$tableName}` WHERE sid = %1";
     $dao =& CRM_Core_DAO::executeQuery($sql, array(1 => array($params['sid'], "Int")));
     while ($dao->fetch()) {
-      $vals = (array) $dao;
+      $vals = $dao->toArray();
       $vals['excluded_pages'] = unserialize($vals['excluded_pages']);
       $returnValues[] = $vals;
     }
@@ -43,7 +43,7 @@ function civicrm_api3_inventory_get($params) {
     $sql = "SELECT * FROM `{$tableName}` WHERE id = %1";
     $dao =& CRM_Core_DAO::executeQuery($sql, array(1 => array($params['id'], "Int")));
     if ($dao->fetch()) {
-      $returnValues = (array) $dao;
+      $returnValues = $dao->toArray();
       $returnValues['excluded_pages'] = unserialize($returnValues['excluded_pages']);
     }
 
@@ -54,7 +54,7 @@ function civicrm_api3_inventory_get($params) {
     $sql = "SELECT * FROM `{$tableName}`";
     $dao =& CRM_Core_DAO::executeQuery($sql);
     while ($dao->fetch()) {
-      $vals = (array) $dao;
+      $vals = $dao->toArray();
       $vals['excluded_pages'] = unserialize($vals['excluded_pages']);
       $returnValues[] = $vals;
     }
