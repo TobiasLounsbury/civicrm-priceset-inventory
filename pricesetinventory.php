@@ -118,7 +118,6 @@ function pricesetinventory_civicrm_buildForm($formName, &$form) {
             $ePages = array();
             if (array_key_exists("excluded_pages", $inventorySet['values']) && is_array($inventorySet['values']['excluded_pages'])) {
                 $ePages = $inventorySet['values']['excluded_pages'];
-                var_dump($ePages);
             }
             if ($inventorySet['is_error'] == 0 && $inventorySet['count'] > 0 && !in_array($page, $ePages) && $inventorySet['values']['is_active'] == 1) {
                 $inventorySet = $inventorySet['values'];
