@@ -97,8 +97,14 @@ class CRM_Pricesetinventory_Form_InventoryItem extends CRM_Core_Form {
             true
         );
 
+      $version = substr(CRM_Utils_System::version(), 0, 3);
+      if($version <= 4.6) {
+        //description
+        $this->addWysiwyg("description", "Description", array());
+      } else {
         //description
         $this->add("wysiwyg", "description", "Description", array());
+      }
 
         //image_path
         $this->add(
