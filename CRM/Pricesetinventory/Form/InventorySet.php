@@ -121,6 +121,15 @@ class CRM_Pricesetinventory_Form_InventorySet extends CRM_Core_Form {
         if ($this->_sid) {
             $inventorySet = civicrm_api3("Inventory", "Set", array("sid" => $this->_sid));
             if ($inventorySet['is_error'] == 0) {
+
+                if(array_key_exists("excluded_pages", $inventorySet['values'])) {
+                  $ePages = array();
+                  foreach($inventorySet['values']['excluded_pages'] as $page) {
+                    $ePages[$page] = 1;
+                  }
+                  $inventorySet['values']['excluded_pages'] = $ePages;
+                }
+
                 return $inventorySet['values'];
             }
         }
