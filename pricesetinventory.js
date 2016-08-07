@@ -3,10 +3,14 @@
  */
 CRM.$(function ($) {
 
+    function isZeroQuantity(qty) {
+        return (qty === 0 || qty === "0");
+    }
+
     function doForSelect(item) {
         var button = doForAll(item, $("#price_" + CRM.Inventory.Items[item].field_id).closest(".content"), "append");
         //Check for and mark sold out items
-        if(CRM.Inventory.Items[item].quantity == 0) {
+        if(isZeroQuantity(CRM.Inventory.Items[item].quantity)) {
             $("#price_" + CRM.Inventory.Items[item].field_id + " option[value='" + CRM.Inventory.Items[item].field_value_id + "']").prop('disabled',true).append("<span class='inventory-sold-out'> - " + ts('SOLD OUT')  + "</span>");
         }
     }
@@ -15,7 +19,7 @@ CRM.$(function ($) {
         var button = doForAll(item, $("#price_" + CRM.Inventory.Items[item].field_id + "_" + CRM.Inventory.Items[item].field_value_id).parent(), "after");
         $("#price_" + CRM.Inventory.Items[item].field_id + "_" + CRM.Inventory.Items[item].field_value_id).parent().append(button);
         //Check for and mark sold out items
-        if(CRM.Inventory.Items[item].quantity == 0) {
+        if(isZeroQuantity(CRM.Inventory.Items[item].quantity)) {
             $("#price_" + CRM.Inventory.Items[item].field_id + "_" + CRM.Inventory.Items[item].field_value_id).prop('disabled',true).next().addClass("disabled").append("<span class='inventory-sold-out'> - " + ts('SOLD OUT')  + "</span>");
         }
     }
@@ -23,7 +27,7 @@ CRM.$(function ($) {
         var button = doForAll(item, $("[name='price_" + CRM.Inventory.Items[item].field_id + "'][value=" + CRM.Inventory.Items[item].field_value_id + "]").parent(), "after");
         $("#price_" + CRM.Inventory.Items[item].field_id + "_" + CRM.Inventory.Items[item].field_value_id).parent().append(button);
         //Check for and mark sold out items
-        if(CRM.Inventory.Items[item].quantity == 0) {
+        if(isZeroQuantity(CRM.Inventory.Items[item].quantity)) {
             $("[name='price_" + CRM.Inventory.Items[item].field_id + "'][value=" + CRM.Inventory.Items[item].field_value_id + "]").prop('disabled',true).next().addClass("disabled").append("<span class='inventory-sold-out'> - " + ts('SOLD OUT')  + "</span>");
         }
     }
@@ -32,7 +36,7 @@ CRM.$(function ($) {
         var button = doForAll(item, $("#price_" + CRM.Inventory.Items[item].field_id).closest(".content"), "append");
         $("#inventory_" + CRM.Inventory.Items[item].field_id).before(button);
         //Check for and mark sold out items
-        if(CRM.Inventory.Items[item].quantity == 0) {
+        if(isZeroQuantity(CRM.Inventory.Items[item].quantity)) {
             $("#price_" + CRM.Inventory.Items[item].field_id).prop('disabled',true).after("<span class='inventory-sold-out'> - " + ts('SOLD OUT')  + "</span>");
         }
     }
