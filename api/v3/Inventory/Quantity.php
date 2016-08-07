@@ -9,8 +9,8 @@
  * @see http://wiki.civicrm.org/confluence/display/CRM/API+Architecture+Standards
  */
 function _civicrm_api3_inventory_quantity_spec(&$spec) {
-    $spec['id']['api.required'] = 1;
-    $spec['qty']['api.required'] = 1;
+  $spec['id']['api.required'] = 1;
+  $spec['qty']['api.required'] = 1;
 }
 
 /**
@@ -23,31 +23,32 @@ function _civicrm_api3_inventory_quantity_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_inventory_quantity($params) {
-    //TODO: Allow for checking of quantity by field id, field, value id, and id.
-    if (array_key_exists('id', $params) && array_key_exists('qty', $params)) {
+  //TODO: Allow for checking of quantity by field id, field, value id, and id.
+  if (array_key_exists('id', $params) && array_key_exists('qty', $params)) {
 
-        $sql = "UPDATE `{PSI_TABLE}` SET `quantity` = %0 WHERE id = %2";
-        $values = array(2 => array($params['id'], "Int"));
+    $tableName = PSI_TABLE;
+    $sql = "UPDATE `{$tableName}` SET `quantity` = %0 WHERE id = %2";
+    $values = array(2 => array($params['id'], "Int"));
 
-        if ($params['qty'][0] == "-") {
-            $sql = str_replace("%0", "`quantity` - %1", $sql);
-            $values[1] = array(substr($params['qty'], 1), "Int");
-        } elseif ($params['qty'][0] == "+") {
-            $sql = str_replace("%0", "`quantity` + %1", $sql);
-            $values[1] = array(substr($params['qty'], 1), "Int");
-        } else {
-            $values[0] = array($params['qty'], "Int");
-        }
-
-        $dao =& CRM_Core_DAO::executeQuery($sql, $values);
-
-        if ($dao) {
-            return civicrm_api3_create_success(array(), $params, 'Inventory', 'Quantity');
-        } else {
-            throw new API_Exception("Unable to set quantity", 3);
-        }
+    if ($params['qty'][0] == "-") {
+      $sql = str_replace("%0", "`quantity` - %1", $sql);
+      $values[1] = array(substr($params['qty'], 1), "Int");
+    } elseif ($params['qty'][0] == "+") {
+      $sql = str_replace("%0", "`quantity` + %1", $sql);
+      $values[1] = array(substr($params['qty'], 1), "Int");
     } else {
-        throw new API_Exception("id and qty are both required fields", 12);
+      $values[0] = array($params['qty'], "Int");
     }
+
+    $dao =& CRM_Core_DAO::executeQuery($sql, $values);
+
+    if ($dao) {
+      return civicrm_api3_create_success(array(), $params, 'Inventory', 'Quantity');
+    } else {
+      throw new API_Exception("Unable to set quantity", 3);
+    }
+  } else {
+    throw new API_Exception("id and qty are both required fields", 12);
+  }
 }
 

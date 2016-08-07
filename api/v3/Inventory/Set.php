@@ -1,5 +1,7 @@
 <?php
 
+require_once "pricesetinventory_const.php";
+
 /**
  * Inventory.Get API specification (optional)
  * This is used for documentation and validation.
@@ -22,6 +24,7 @@ function _civicrm_api3_inventory_set_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_inventory_set($params) {
+  $tableName = PSI_SET_TABLE;
     if (array_key_exists('data', $params) && !empty($params['data'])) {
 
         $values = array();
@@ -31,9 +34,9 @@ function civicrm_api3_inventory_set($params) {
         $values[5] = array((array_key_exists('is_active', $params['data']) ? $params['data']['is_active'] : 0), "Int");
         if(array_key_exists("sid", $params['data'])) {
             $values[1] = array($params['data']['sid'], "Int");
-            $sql = "UPDATE `{PSI_SET_TABLE}` SET `name` = %2, `price_set_id` = %3, `excluded_pages` = %4, `is_active` = %5 WHERE sid = %1 LIMIT 1";
+            $sql = "UPDATE `{$tableName}` SET `name` = %2, `price_set_id` = %3, `excluded_pages` = %4, `is_active` = %5 WHERE sid = %1 LIMIT 1";
         } else {
-            $sql = "INSERT INTO `{PSI_SET_TABLE}` (`name`, `price_set_id`, `excluded_pages`, `is_active`) VALUES(%2, %3, %4, %5)";
+            $sql = "INSERT INTO `{$tableName}` (`name`, `price_set_id`, `excluded_pages`, `is_active`) VALUES(%2, %3, %4, %5)";
         }
         $dao =& CRM_Core_DAO::executeQuery($sql, $values);
 
@@ -48,7 +51,7 @@ function civicrm_api3_inventory_set($params) {
 
         $returnValues = array();
 
-        $sql = "SELECT * FROM `{PSI_SET_TABLE}` WHERE sid = %1 LIMIT 1";
+        $sql = "SELECT * FROM `{$tableName}` WHERE sid = %1 LIMIT 1";
         $dao =& CRM_Core_DAO::executeQuery($sql, array(1 => array($params['sid'], "Int")));
         if ($dao->fetch()) {
             $returnValues = array(
@@ -64,7 +67,7 @@ function civicrm_api3_inventory_set($params) {
     } elseif (array_key_exists('pid', $params) && $params['pid']) {
         $returnValues = array();
 
-        $sql = "SELECT * FROM `{PSI_SET_TABLE}` WHERE price_set_id = %1 LIMIT 1";
+        $sql = "SELECT * FROM `{$tableName}` WHERE price_set_id = %1 LIMIT 1";
         $dao =& CRM_Core_DAO::executeQuery($sql, array(1 => array($params['pid'], "Int")));
         if ($dao->fetch()) {
             $returnValues = array(
@@ -80,8 +83,8 @@ function civicrm_api3_inventory_set($params) {
     } else {
         //throw new API_Exception(/*errorMessage*/ 'Everyone knows that the magicword is "Set"', /*errorCode*/ 1234);
         $returnValues = array();
-
-        $sql = "SELECT * FROM `{PSI_SET_TABLE}`";
+        //CRM_Case_DAO_Case::$_tableName
+        $sql = "SELECT * FROM `{$tableName}`";
         $dao =& CRM_Core_DAO::executeQuery($sql);
         while ($dao->fetch()) {
             $returnValues[] = array(
