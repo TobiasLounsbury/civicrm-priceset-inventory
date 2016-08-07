@@ -1,5 +1,7 @@
 <?php
 
+require_once "pricesetinventory_const.php";
+
 /**
  * Inventory.Quantity API specification (optional)
  * This is used for documentation and validation.
