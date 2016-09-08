@@ -38,7 +38,7 @@ function civicrm_api3_inventory_create($params) {
     $values[5] = (array_key_exists('field_value_id', $params) && !empty($params['field_value_id'])) ? array($params['field_value_id'], "Int") : array("", "Date");
     $values[6] = array((array_key_exists('image_path', $params) ? $params['image_path'] : ""), "String");
     $values[7] = array((array_key_exists('description', $params) ? $params['description'] : ""), "String");
-    $values[8] = (array_key_exists('quantity', $params) && !is_null($params['quantity'])) ? array($params['quantity'], "Int") : array("", "Date");
+    $values[8] = (array_key_exists('quantity', $params) && is_int($params['quantity'])) ? array($params['quantity'], "Int") : array("", "Date");
     $values[9] = array((array_key_exists('is_active', $params) ? $params['is_active'] : 0), "Int");
     $values[10] = array(serialize(array_key_exists('excluded_pages', $params) ? $params['excluded_pages'] : array()), "String");
     $values[11] = array((array_key_exists('default_open', $params) ? $params['default_open'] : 0), "Int");
