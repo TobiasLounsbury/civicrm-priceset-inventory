@@ -8,7 +8,7 @@ CRM.$(function ($) {
   }
 
   function getInformationPane(itemId, item) {
-    var itemContent = $("<div id='inventory_" + itemId + "' class='inventory-section inventory-" + CRM.Inventory.Items[item].type.toLowerCase() + "-section'></div>");
+    var itemContent = $("<div id='inventory_" + itemId + "' class='inventory-section inventory-section-default  inventory-" + CRM.Inventory.Items[item].type.toLowerCase() + "-section'></div>");
     itemContent.append("<h3>" + CRM.Inventory.Items[item].title + "</h3>");
     var img = "";
     if (CRM.Inventory.Items[item].image_data) {

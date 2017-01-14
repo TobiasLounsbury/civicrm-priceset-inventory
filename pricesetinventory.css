@@ -31,25 +31,25 @@
     overflow: hidden;
     height: 100%;
 }
-.inventory-section {
+.inventory-section-default {
     border: 1px solid #aaa;
     margin-left: 25px;
     margin-right: 25px;
     margin-top: 5px;
     border-radius: 5px;
 }
-.inventory-section h3 {
+.inventory-section-default h3 {
     border-bottom: 1px solid #aaa;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     -moz-border-radius-topleft: 5px;
     -moz-border-radius-topright: 5px;
 }
-.inventory-section div.inventory-content {
+.inventory-section-default div.inventory-content {
     padding: 5px;
 }
 
-.inventory-section div.inventory-content img.inventory-image {
+.inventory-section-default div.inventory-content img.inventory-image {
     max-width: 25%;
     float: left;
     margin-right: 5px;
