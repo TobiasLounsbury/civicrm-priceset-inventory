@@ -134,8 +134,9 @@ CRM.$(function ($) {
 
     $.each(inv_selects, function(i, v) {
       $("#price_" + CRM.Inventory.Items[v].field_id).change(function() {
-        $(this).closest(".crm-section").find(".inventory-section").slideUp();
-        $("#inventory_" + CRM.Inventory.Items[v].field_id + "_" + $(this).val()).slideDown()
+        var trgt = $("#inventory_" + CRM.Inventory.Items[v].field_id + "_" + $(this).val());
+        $(this).closest(".crm-section").find(".inventory-section").not(trgt).slideUp();
+        trgt.slideDown()
       }).closest(".crm-section").find(".inventory-section").hide();
       $("#inventory_" + CRM.Inventory.Items[v].field_id + "_" + $("#price_" + CRM.Inventory.Items[v].field_id).val()).show();
     });
