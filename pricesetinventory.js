@@ -152,8 +152,8 @@ CRM.$(function ($) {
       $("#inventory_" + $(this).attr("data-target")).slideToggle();
       return false;
     }).mouseover(function () {
-      var newWidth = $(this).find(".inventoryMoreInfo").css("width");
-      $(this).find(".inventoryMoreInfo").stop().animate({width: 123}, "slow");
+      var obj = $(this).find(".inventoryMoreInfoText");
+      $(this).find(".inventoryMoreInfo").stop().animate({width: obj.outerWidth()}, "slow");
     }).mouseout(function() {
       $(this).find(".inventoryMoreInfo").stop().animate({width: 0}, "slow");
     });

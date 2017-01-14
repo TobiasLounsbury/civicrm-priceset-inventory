@@ -19,9 +19,11 @@
     margin-right: 0px;
 }
 .inventoryMoreInfoText {
-    width: 500px;
+    width: auto;
+    white-space: nowrap;
     padding-left: 5px;
     text-align: left;
+    display: inline-block;
 }
 .inventoryMoreInfo {
     display: inline-block;
