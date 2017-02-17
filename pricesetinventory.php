@@ -168,6 +168,9 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
                     $inventoryItems = $inventoryItems['values'];
 
                     foreach($inventoryItems as $key => $item) {
+                      if(!array_key_exists("excluded_page", $item) || is_null($item['excluded_page'])) {
+                        $item['excluded_page'] = array();
+                      }
                         if ($item['is_active'] == 1 && !in_array($page, $item['excluded_page'])) {
                             //Do we have any logic to be added that isn't related to Quantity
 
