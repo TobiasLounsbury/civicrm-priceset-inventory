@@ -174,7 +174,7 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
             if ($item['is_active'] == 1 && !in_array($page, $item['excluded_page'])) {
               //Do we have any logic to be added that isn't related to Quantity
 
-              if (!empty($item['quantity']) || $item['quantity'] == 0) {
+              if (is_numeric($item['quantity'])) {
 
                 switch ($form->_priceSet['fields'][$item['field_id']]['html_type']) {
                   case "Text":
