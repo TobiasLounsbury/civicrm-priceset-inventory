@@ -107,6 +107,18 @@ function pricesetinventory_civicrm_alterSettingsFolders(&$metaDataFolders = NULL
   _pricesetinventory_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
+
+/**
+ * Implementation of hook_civicrm_alterSettingsFolders
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_buildForm
+ *
+ * Used to inject needed javascript and settings on pages configured with
+ * a price-set connected to an inventory
+ *
+ * @param $formName
+ * @param $form
+ */
 function pricesetinventory_civicrm_buildForm($formName, &$form) {
 
     if ($formName = 'CRM_Contribute_Form_Contribution_Main') {
@@ -153,6 +165,20 @@ function pricesetinventory_civicrm_buildForm($formName, &$form) {
     }
 }
 
+
+/**
+ * Implementation of hook_civicrm_validateForm
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_validateForm
+ *
+ * Used to validate/enforce inventory quantity
+ *
+ * @param $formName
+ * @param $fields
+ * @param $files
+ * @param $form
+ * @param $errors
+ */
 function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$errors ) {
 
     if ($formName = 'CRM_Contribute_Form_Contribution_Main') {
@@ -202,9 +228,19 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
             }
         }
     }
-    error_log("test");
 }
 
+
+/**
+ * Implementation of hook_civicrm_postProcess
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_postProcess
+ *
+ * Used for updating item quantity
+ *
+ * @param $formName
+ * @param $form
+ */
 function pricesetinventory_civicrm_postProcess( $formName, &$form) {
     if ($formName == 'CRM_Contribute_Form_Contribution_Confirm') {
         if($psid = $form->getVar("_priceSetId")) {
@@ -249,6 +285,16 @@ function pricesetinventory_civicrm_postProcess( $formName, &$form) {
     }
 }
 
+
+/**
+ * Implementation of hook_civicrm_navigationMenu
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
+ *
+ * Add Inventory Settings link to the Administer->CiviContribute menu.
+ *
+ * @param $params
+ */
 function pricesetinventory_civicrm_navigationMenu( &$params ) {
     // get the id of Administer Menu
     $administerMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Administer', 'id', 'name');
@@ -273,3 +319,4 @@ function pricesetinventory_civicrm_navigationMenu( &$params ) {
         );
     }
 }
+
