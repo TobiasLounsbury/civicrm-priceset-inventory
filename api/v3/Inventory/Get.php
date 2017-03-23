@@ -59,6 +59,9 @@ function civicrm_api3_inventory_get($params) {
       $returnValues[] = $vals;
     }
 
+    //Hook to allow set to be altered
+    CRM_Pricesetinventory_Hooks::alterInventoryItem("set", $returnValues);
+
     return civicrm_api3_create_success($returnValues, $params, 'Inventory', 'Get');
   }
 }

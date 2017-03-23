@@ -49,7 +49,11 @@ function civicrm_api3_inventory_item($params) {
   $dao =& CRM_Core_DAO::executeQuery($sql, $queryData);
 
   if($dao->fetch()) {
-    return civicrm_api3_create_success($dao->toArray(), $params, 'Inventory', 'Item');
+    $data = $dao->toArray();
+    //Hook to alter this item.
+    CRM_Pricesetinventory_Hooks::alterInventoryItem("item", $data);
+
+    return civicrm_api3_create_success($data, $params, 'Inventory', 'Item');
   } else {
     return civicrm_api3_create_success(array(), $params, 'Inventory', 'Item');
   }
