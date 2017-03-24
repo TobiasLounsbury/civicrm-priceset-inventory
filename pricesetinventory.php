@@ -331,9 +331,8 @@ function pricesetinventory_civicrm_navigationMenu( &$params ) {
  * @link https://github.com/TobiasLounsbury/civicart
  *
  *
- * @param $itemReference
+ * @param $item
  * @param $context
- * @param $inventory
  */
 function pricesetinventory_civicart_getItemInventory(&$item, $context) {
   try {
