@@ -320,3 +320,46 @@ function pricesetinventory_civicrm_navigationMenu( &$params ) {
   }
 }
 
+
+/**
+ * Implementation of hook_civicart_getItemInventory
+ * @link https://github.com/TobiasLounsbury/civicart
+ *
+ *
+ * @param $itemReference
+ * @param $context
+ * @param $inventory
+ */
+function pricesetinventory_civicart_getItemInventory(&$item, $context) {
+  try {
+
+
+    $params = array();
+    if($item['type'] == "item") {
+      $params['field_id'] = $item['id'];
+    }
+
+    $result = civicrm_api3("Inventory", "item", $params);
+
+    if($result['is_error'] == 0 && $result['count'] > 0) {
+      $item['description'] = CRM_Utils_Array::value("description", $result['values'], $item['description']);
+      if(array_key_exists("quantity", $result['values'])) {
+        if ($result['values']['quantity']) {
+          $item['quantity'] = $result['values']['quantity'];
+        } else {
+          $item['quantity'] = false;
+        }
+      }
+
+      if(array_key_exists("image_path", $result['values']) && $result['values']['image_path']) {
+        $config = CRM_Core_Config::singleton();
+        $item['image'] = $config->imageUploadURL . $result['values']['image_path'];
+      } else if (array_key_exists("image_data", $result['values']) && $result['values']['image_data']) {
+        $item['image'] = $result['values']['image_data'];
+      }
+    }
+
+  } catch (Exception $e) {}
+
+}
+
