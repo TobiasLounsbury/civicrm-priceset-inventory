@@ -194,11 +194,14 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
           $inventoryItems = $inventoryItems['values'];
 
           foreach($inventoryItems as $key => $item) {
+            if(!array_key_exists("excluded_page", $item) || is_null($item['excluded_page'])) {
+              $item['excluded_page'] = array();
+            }
             if ($item['is_active'] == 1 && !in_array($page, $item['excluded_page'])) {
               //Do we have any logic to be added that isn't related to Quantity
 
-              if (!empty($item['quantity']) || $item['quantity'] == 0) {
-
+              if (is_numeric($item['quantity'])) {
+                
                 switch ($form->_priceSet['fields'][$item['field_id']]['html_type']) {
                   case "Text":
                     if ($fields['price_'.$item['field_id']] > $item['quantity']) {
@@ -209,11 +212,13 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
                       }
                     }
                     break;
+                    
                   case "CheckBox":
                     if ($item['quantity'] == 0 && is_array($fields['price_'.$item['field_id']]) && array_key_exists($item['field_value_id'], $fields['price_'.$item['field_id']]) && $fields['price_'.$item['field_id']][$item['field_value_id']] == 1) {
                       $errors['price_'.$item['field_id']] = ts( "I'm sorry, this item is sold out." );
                     }
                     break;
+
                   case "Radio":
                   case "Select":
                     if ($item['quantity'] == 0 && $fields['price_'.$item['field_id']] == $item['field_value_id']) {
