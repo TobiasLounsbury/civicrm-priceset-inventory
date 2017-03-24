@@ -107,6 +107,18 @@ function pricesetinventory_civicrm_alterSettingsFolders(&$metaDataFolders = NULL
   _pricesetinventory_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
+
+/**
+ * Implementation of hook_civicrm_alterSettingsFolders
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_buildForm
+ *
+ * Used to inject needed javascript and settings on pages configured with
+ * a price-set connected to an inventory
+ *
+ * @param $formName
+ * @param $form
+ */
 function pricesetinventory_civicrm_buildForm($formName, &$form) {
 
   if ($formName = 'CRM_Contribute_Form_Contribution_Main') {
@@ -153,6 +165,20 @@ function pricesetinventory_civicrm_buildForm($formName, &$form) {
   }
 }
 
+
+/**
+ * Implementation of hook_civicrm_validateForm
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_validateForm
+ *
+ * Used to validate/enforce inventory quantity
+ *
+ * @param $formName
+ * @param $fields
+ * @param $files
+ * @param $form
+ * @param $errors
+ */
 function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &$form, &$errors ) {
 
   if ($formName = 'CRM_Contribute_Form_Contribution_Main') {
@@ -175,7 +201,7 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
               //Do we have any logic to be added that isn't related to Quantity
 
               if (is_numeric($item['quantity'])) {
-
+                
                 switch ($form->_priceSet['fields'][$item['field_id']]['html_type']) {
                   case "Text":
                     if ($fields['price_'.$item['field_id']] > $item['quantity']) {
@@ -186,11 +212,13 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
                       }
                     }
                     break;
+                    
                   case "CheckBox":
                     if ($item['quantity'] == 0 && is_array($fields['price_'.$item['field_id']]) && array_key_exists($item['field_value_id'], $fields['price_'.$item['field_id']]) && $fields['price_'.$item['field_id']][$item['field_value_id']] == 1) {
                       $errors['price_'.$item['field_id']] = ts( "I'm sorry, this item is sold out." );
                     }
                     break;
+
                   case "Radio":
                   case "Select":
                     if ($item['quantity'] == 0 && $fields['price_'.$item['field_id']] == $item['field_value_id']) {
@@ -205,9 +233,19 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
       }
     }
   }
-  error_log("test");
 }
 
+
+/**
+ * Implementation of hook_civicrm_postProcess
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_postProcess
+ *
+ * Used for updating item quantity
+ *
+ * @param $formName
+ * @param $form
+ */
 function pricesetinventory_civicrm_postProcess( $formName, &$form) {
   if ($formName == 'CRM_Contribute_Form_Contribution_Confirm') {
     if($psid = $form->getVar("_priceSetId")) {
@@ -252,6 +290,16 @@ function pricesetinventory_civicrm_postProcess( $formName, &$form) {
   }
 }
 
+
+/**
+ * Implementation of hook_civicrm_navigationMenu
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
+ *
+ * Add Inventory Settings link to the Administer->CiviContribute menu.
+ *
+ * @param $params
+ */
 function pricesetinventory_civicrm_navigationMenu( &$params ) {
   // get the id of Administer Menu
   $administerMenuId = CRM_Core_DAO::getFieldValue('CRM_Core_BAO_Navigation', 'Administer', 'id', 'name');
@@ -276,3 +324,47 @@ function pricesetinventory_civicrm_navigationMenu( &$params ) {
     );
   }
 }
+
+
+/**
+ * Implementation of hook_civicart_getItemInventory
+ * @link https://github.com/TobiasLounsbury/civicart
+ *
+ *
+ * @param $itemReference
+ * @param $context
+ * @param $inventory
+ */
+function pricesetinventory_civicart_getItemInventory(&$item, $context) {
+  try {
+
+
+    $params = array();
+    if($item['type'] == "item") {
+      $params['field_id'] = $item['id'];
+    }
+
+    $result = civicrm_api3("Inventory", "item", $params);
+
+    if($result['is_error'] == 0 && $result['count'] > 0) {
+      $item['description'] = CRM_Utils_Array::value("description", $result['values'], $item['description']);
+      if(array_key_exists("quantity", $result['values'])) {
+        if ($result['values']['quantity']) {
+          $item['quantity'] = $result['values']['quantity'];
+        } else {
+          $item['quantity'] = false;
+        }
+      }
+
+      if(array_key_exists("image_path", $result['values']) && $result['values']['image_path']) {
+        $config = CRM_Core_Config::singleton();
+        $item['image'] = $config->imageUploadURL . $result['values']['image_path'];
+      } else if (array_key_exists("image_data", $result['values']) && $result['values']['image_data']) {
+        $item['image'] = $result['values']['image_data'];
+      }
+    }
+
+  } catch (Exception $e) {}
+
+}
+
