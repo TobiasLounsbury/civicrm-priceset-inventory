@@ -1,4 +1,4 @@
-#CiviCRM PriceSet Inventory
+# CiviCRM PriceSet Inventory
 
 This extension creates an inventory system tied to price-sets.
 It has the following features:
