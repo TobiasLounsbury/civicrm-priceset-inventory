@@ -130,6 +130,15 @@ class CRM_Pricesetinventory_Form_InventoryItem extends CRM_Core_Form {
             false
         );
 
+      //Purchase Limit
+      $this->add(
+        'text',
+        'purchase_limit',
+        ts('Purchase Limit'),
+        array("maxlength" => 5, "size" => 2),
+        false
+      );
+
         //excluded_pages
         $pages = $this->getPages();
 
@@ -176,6 +185,7 @@ class CRM_Pricesetinventory_Form_InventoryItem extends CRM_Core_Form {
         $values = $this->exportValues();
         //CRM_Core_Session::setStatus(ts(''), "Title", 'error');
         $values['excluded_pages'] = (array_key_exists("excluded_pages", $values)) ? array_keys($values['excluded_pages']) : array();
+        $values['purchase_limit'] = CRM_Utils_Array::value("purchase_limit", $values, 0);
         $inventorySet = civicrm_api3("Inventory", "Create", $values);
 
         CRM_Core_Session::setStatus(ts('This inventory item has been saved.'), "Saved", "success");
