@@ -11,6 +11,7 @@ CREATE TABLE `civicrm_priceset_inventory` (
   `title` VARCHAR(255) NULL,
   `description` TEXT NULL,
   `quantity` INT NULL,
+  `purchase_limit` INT NOT NULL DEFAULT 0,
   `is_active` TINYINT(1) NULL DEFAULT 1,
   `default_open` TINYINT(1) NULL DEFAULT 0,
   `excluded_pages` VARCHAR(255) NULL DEFAULT 'a:0:{}',

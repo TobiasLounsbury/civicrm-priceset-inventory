@@ -21,7 +21,12 @@ class CRM_Pricesetinventory_Upgrader extends CRM_Pricesetinventory_Upgrader_Base
     CRM_Core_DAO::executeQuery('ALTER TABLE `{PSI_TABLE}` ADD COLUMN `default_open` TINYINT(1) NOT NULL DEFAULT 0 AFTER `excluded_pages`');
     return TRUE;
   }
-  
+
+  public function upgrade_42110() {
+    $this->ctx->log->info('Applying update for version 1.1.0');
+    CRM_Core_DAO::executeQuery('ALTER TABLE `{PSI_TABLE}` ADD COLUMN `purchase_limit` INT NOT NULL DEFAULT 0 AFTER `quantity`');
+    return TRUE;
+  }
 
   /**
    * Example: Run an external SQL script when the module is uninstalled
