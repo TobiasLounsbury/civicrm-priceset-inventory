@@ -201,7 +201,7 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
               //Do we have any logic to be added that isn't related to Quantity
 
               if (is_numeric($item['quantity'])) {
-                
+
                 switch ($form->_priceSet['fields'][$item['field_id']]['html_type']) {
                   case "Text":
                     if ($fields['price_'.$item['field_id']] > $item['quantity']) {
@@ -211,8 +211,9 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
                         $errors['price_'.$item['field_id']] = ts( 'I\'m sorry, We only have %1 in stock, please reduce your quantity.', array(1 => $item['quantity']));
                       }
                     }
+
                     break;
-                    
+
                   case "CheckBox":
                     if ($item['quantity'] == 0 && is_array($fields['price_'.$item['field_id']]) && array_key_exists($item['field_value_id'], $fields['price_'.$item['field_id']]) && $fields['price_'.$item['field_id']][$item['field_value_id']] == 1) {
                       $errors['price_'.$item['field_id']] = ts( "I'm sorry, this item is sold out." );
@@ -227,6 +228,16 @@ function pricesetinventory_civicrm_validateForm( $formName, &$fields, &$files, &
                     break;
                 }
               }
+
+              //Handle Purchase Limit for text items.
+              if($form->_priceSet['fields'][$item['field_id']]['html_type'] == "Text") {
+                if ($fields['price_'.$item['field_id']] > $item['purchase_limit'] && $item['purchase_limit'] > 0) {
+                  $errors['price_'.$item['field_id']] = ts( "This item is limited to a quantity of %1", array(1 => $item['purchase_limit']));
+                }
+              }
+
+
+
             }
           }
         }
