@@ -42,13 +42,15 @@ function civicrm_api3_inventory_create($params) {
     $values[9] = array((array_key_exists('is_active', $params) ? $params['is_active'] : 0), "Int");
     $values[10] = array(serialize(array_key_exists('excluded_pages', $params) ? $params['excluded_pages'] : array()), "String");
     $values[11] = array((array_key_exists('default_open', $params) ? $params['default_open'] : 0), "Int");
+    $values[12] = array(((array_key_exists('purchase_limit', $params) && $params['purchase_limit']) ? $params['purchase_limit'] : 0), "Int");
+
 
     $tableName = PSI_TABLE;
     if (array_key_exists('id', $params) && $params['id']) {
-      $sql = "UPDATE `{$tableName}` SET `field_id` = %2, `sid` = %3, `title` = %4, `field_value_id` = %5, `image_path` = %6, `description` = %7, `quantity` = %8, `is_active` = %9, `excluded_pages` = %10, `default_open` = %11 WHERE `id` = %1 LIMIT 1";
+      $sql = "UPDATE `{$tableName}` SET `field_id` = %2, `sid` = %3, `title` = %4, `field_value_id` = %5, `image_path` = %6, `description` = %7, `quantity` = %8, `is_active` = %9, `excluded_pages` = %10, `default_open` = %11, `purchase_limit` = %12 WHERE `id` = %1 LIMIT 1";
       $values[1] = array($params['id'], "Int");
     } else {
-      $sql = "INSERT INTO `{$tableName}`(`field_id`, `sid`, `title`, `field_value_id`, `image_path`, `description`, `quantity`, `is_active`, `excluded_pages`, `default_open`) VALUES(%2, %3, %4, %5, %6, %7, %8, %9, %10, %11)";
+      $sql = "INSERT INTO `{$tableName}`(`field_id`, `sid`, `title`, `field_value_id`, `image_path`, `description`, `quantity`, `is_active`, `excluded_pages`, `default_open`, `purchase_limit`) VALUES(%2, %3, %4, %5, %6, %7, %8, %9, %10, %11, %12)";
     }
 
     $dao =& CRM_Core_DAO::executeQuery($sql, $values);
