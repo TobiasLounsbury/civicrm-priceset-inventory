@@ -1,5 +1,7 @@
 <?php
 
+require_once("pricesetinventory_const.php");
+
 /**
  * Collection of upgrade steps
  */
@@ -18,13 +20,13 @@ class CRM_Pricesetinventory_Upgrader extends CRM_Pricesetinventory_Upgrader_Base
 
   public function upgrade_4200() {
     $this->ctx->log->info('Applying update 4200');
-    CRM_Core_DAO::executeQuery('ALTER TABLE `{PSI_TABLE}` ADD COLUMN `default_open` TINYINT(1) NOT NULL DEFAULT 0 AFTER `excluded_pages`');
+    CRM_Core_DAO::executeQuery('ALTER TABLE `'.PSI_TABLE.'` ADD COLUMN `default_open` TINYINT(1) NOT NULL DEFAULT 0 AFTER `excluded_pages`');
     return TRUE;
   }
 
   public function upgrade_42110() {
     $this->ctx->log->info('Applying update for version 1.1.0');
-    CRM_Core_DAO::executeQuery('ALTER TABLE `{PSI_TABLE}` ADD COLUMN `purchase_limit` INT NOT NULL DEFAULT 0 AFTER `quantity`');
+    CRM_Core_DAO::executeQuery('ALTER TABLE `'.PSI_TABLE.'` ADD COLUMN `purchase_limit` INT NOT NULL DEFAULT 0 AFTER `quantity`');
     return TRUE;
   }
 
