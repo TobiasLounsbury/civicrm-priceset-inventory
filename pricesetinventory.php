@@ -345,7 +345,7 @@ function pricesetinventory_civicrm_navigationMenu( &$params ) {
  * @param $item
  * @param $context
  */
-function pricesetinventory_civicart_getItemInventory(&$item, $context) {
+function pricesetinventory_civicart_getItemInventory(&$item) {
   try {
 
 
@@ -353,6 +353,8 @@ function pricesetinventory_civicart_getItemInventory(&$item, $context) {
     if($item['type'] == "item") {
       $params['field_id'] = $item['id'];
     }
+
+    //todo: Handle individual options
 
     $result = civicrm_api3("Inventory", "item", $params);
 
