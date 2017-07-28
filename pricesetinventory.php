@@ -270,7 +270,7 @@ function pricesetinventory_civicrm_postProcess( $formName, &$form) {
           $inventoryItems = $inventoryItems['values'];
 
           foreach($inventoryItems as $item) {
-            if ($item['is_active'] == 1 && !in_array($page, $item['excluded_page'])) {
+            if ($item['is_active'] == 1 && (!is_array($item['excluded_page']) || !in_array($page, $item['excluded_page']))) {
               //Do we have any logic to be added that isn't related to Quantity
 
               if (!empty($item['quantity']) || $item['quantity'] == 0) {
