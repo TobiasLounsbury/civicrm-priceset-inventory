@@ -361,10 +361,18 @@ function pricesetinventory_civicart_getItemInventory(&$item) {
     if($result['is_error'] == 0 && $result['count'] > 0) {
       $item['description'] = CRM_Utils_Array::value("description", $result['values'], $item['description']);
       if(array_key_exists("quantity", $result['values'])) {
-        if ($result['values']['quantity']) {
+        if (is_numeric($result['values']['quantity'])) {
           $item['quantity'] = $result['values']['quantity'];
         } else {
           $item['quantity'] = false;
+        }
+      }
+
+      if(array_key_exists("purchase_limit", $result['values'])) {
+        if (is_numeric($result['values']['purchase_limit'])) {
+          $item['limit'] = $result['values']['purchase_limit'];
+        } else {
+          $item['limit'] = false;
         }
       }
 
